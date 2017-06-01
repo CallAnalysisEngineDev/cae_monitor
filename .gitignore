@@ -1,3 +1,7 @@
+/.settings
+/WebRoot/WEB-INF/lib
+.classpath
+
 # Compiled class file
 *.class
 
