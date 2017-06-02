@@ -3,6 +3,8 @@ package org.cae.monitor.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.cae.monitor.common.ServerInfo;
 import org.cae.monitor.common.ServiceResult;
 import org.cae.monitor.entity.CpuInfo;
@@ -13,12 +15,15 @@ import org.cae.monitor.entity.MemoryInfo;
 import org.cae.monitor.entity.ProcessInfo;
 import org.cae.monitor.remote.IMonitorController;
 import org.cae.monitor.service.IMonitorService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service("monitorService")
 public class MonitorServiceImpl implements IMonitorService {
 
 	private static IMonitorController currentServer;
+	@Resource(name="serversInfo")
+	private List<ServerInfo> serversInfo;
 	private static List<IMonitorController> servers;
 	private static List<CpuInfo> cpuInfo = new ArrayList<CpuInfo>();
 	private static List<MemoryInfo> memoryInfo = new ArrayList<MemoryInfo>();
@@ -81,4 +86,40 @@ public class MonitorServiceImpl implements IMonitorService {
 		return null;
 	}
 
+	@Scheduled(cron="* * * * * *")
+	public void heartbeatTask(){
+		for(ServerInfo serverInfo:serversInfo){
+			System.out.println(serverInfo);
+		}
+	}
+	
+	@Scheduled(cron="* * * * * *")
+	public void getCpuInfoTask(){
+		
+	}
+	
+	@Scheduled(cron="* * * * * *")
+	public void getMemoryInfoTask(){
+		
+	}
+	
+	@Scheduled(cron="* * * * * *")
+	public void getProcessInfoTask(){
+		
+	}
+	
+	@Scheduled(cron="* * * * * *")
+	public void getJvmMemoryInfoTask(){
+		
+	}
+	
+	@Scheduled(cron="* * * * * *")
+	public void getJvmThreadInfoTask(){
+		
+	}
+	
+	@Scheduled(cron="* * * * * *")
+	public void getJvmClassLoadInfoTask(){
+		
+	}
 }

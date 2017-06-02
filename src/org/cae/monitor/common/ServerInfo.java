@@ -1,6 +1,8 @@
 package org.cae.monitor.common;
 
-public class ServerInfo {
+import org.cae.monitor.entity.Entity;
+
+public class ServerInfo extends Entity{
 
 	private String serverName;
 	private String serverIp;
