@@ -1,12 +1,22 @@
 package org.cae.monitor.common;
 
 import org.cae.monitor.entity.Entity;
+import org.cae.monitor.remote.IMonitorController;
 
 public class ServerInfo extends Entity{
 
+	private boolean available;
 	private String serverName;
 	private String serverIp;
+	private String serverPort;
 	private String serverGroup;
+	private IMonitorController remote;
+	public boolean isAvailable() {
+		return available;
+	}
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
 	public String getServerName() {
 		return serverName;
 	}
@@ -19,10 +29,22 @@ public class ServerInfo extends Entity{
 	public void setServerIp(String serverIp) {
 		this.serverIp = serverIp;
 	}
+	public String getServerPort() {
+		return serverPort;
+	}
+	public void setServerPort(String serverPort) {
+		this.serverPort = serverPort;
+	}
 	public String getServerGroup() {
 		return serverGroup;
 	}
 	public void setServerGroup(String serverGroup) {
 		this.serverGroup = serverGroup;
+	}
+	public IMonitorController getRemote() {
+		return remote;
+	}
+	public void setRemote(IMonitorController remote) {
+		this.remote = remote;
 	}
 }

@@ -14,18 +14,22 @@
 	http://www.springframework.org/schema/task  
 	http://www.springframework.org/schema/task/spring-task-4.2.xsd ">
     
-    <bean id="serversInfo" class="java.util.ArrayList">
+    <bean id="serversInfo" class="java.util.ArrayList" scope="singleton">
     	<constructor-arg>
     		<list>
     			<ref bean="server1"/>
-    			<ref bean="server2"/>
     		</list>
     	</constructor-arg>
     </bean>
     <bean id="server1" class="org.cae.monitor.common.ServerInfo">
     	<property name="serverName"><value>默认主机</value></property>
-    	<property name="serverIp"><value>123.207.27.244</value></property>
+    	<property name="serverIp"><value>127.0.0.1</value></property>
+    	<property name="serverPort"><value>8001</value></property>
     	<property name="serverGroup"><value>default</value></property>
+    </bean>
+    <bean id="rmiBeanFactory" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+    	<property name="serviceInterface" value="org.cae.monitor.remote.IMonitorController"/>
+    	<property name="serviceUrl" value=""/>
     </bean>
     
     <context:component-scan base-package="org.cae.monitor.dao.impl"/>

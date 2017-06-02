@@ -1,10 +1,12 @@
 package org.cae.monitor.service.impl;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.cae.monitor.common.IConstant;
 import org.cae.monitor.common.ServerInfo;
 import org.cae.monitor.common.ServiceResult;
 import org.cae.monitor.entity.CpuInfo;
@@ -15,22 +17,50 @@ import org.cae.monitor.entity.MemoryInfo;
 import org.cae.monitor.entity.ProcessInfo;
 import org.cae.monitor.remote.IMonitorController;
 import org.cae.monitor.service.IMonitorService;
+import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service("monitorService")
 public class MonitorServiceImpl implements IMonitorService {
 
+	@Resource(name="&rmiBeanFactory")
+	private RmiProxyFactoryBean rmiBeanFactory;
 	private static IMonitorController currentServer;
 	@Resource(name="serversInfo")
-	private List<ServerInfo> serversInfo;
-	private static List<IMonitorController> servers;
-	private static List<CpuInfo> cpuInfo = new ArrayList<CpuInfo>();
-	private static List<MemoryInfo> memoryInfo = new ArrayList<MemoryInfo>();
-	private static List<ProcessInfo> processInfo = new ArrayList<ProcessInfo>();
-	private static List<JVMMemory> jvmMemoryInfo = new ArrayList<JVMMemory>();
-	private static List<JVMThread> jvmThreadInfo = new ArrayList<JVMThread>();
-	private static List<JVMClassLoad> jvmClassLoad = new ArrayList<JVMClassLoad>();
+	private List<ServerInfo> servers;
+	private static List<CpuInfo> cpuInfo = new LinkedList<CpuInfo>();
+	private static List<MemoryInfo> memoryInfo = new LinkedList<MemoryInfo>();
+	private static List<ProcessInfo> processInfo = new LinkedList<ProcessInfo>();
+	private static List<JVMMemory> jvmMemoryInfo = new LinkedList<JVMMemory>();
+	private static List<JVMThread> jvmThreadInfo = new LinkedList<JVMThread>();
+	private static List<JVMClassLoad> jvmClassLoad = new LinkedList<JVMClassLoad>();
+	
+	@PostConstruct
+	public void init(){
+		for(ServerInfo server:servers){
+			IMonitorController serverRemote=getRemote(server);
+			if(serverRemote==null){
+				server.setAvailable(false);
+			}
+			else{
+				server.setAvailable(true);
+				server.setRemote(serverRemote);
+			}
+		}
+		currentServer=servers.get(0).getRemote();
+	}
+	
+	private IMonitorController getRemote(ServerInfo server){
+		try{
+			String serviceUrl="rmi://"+server.getServerIp()+":"+server.getServerPort()+"/monitor";
+			rmiBeanFactory.setServiceUrl(serviceUrl);
+			rmiBeanFactory.afterPropertiesSet();
+			return (IMonitorController) rmiBeanFactory.getObject();
+		}catch(Exception ex){
+			return null;
+		}
+	}
 	
 	@Override
 	public ServiceResult queryForHomepageService() {
@@ -40,44 +70,58 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult heartbeatService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		result.setSuccessed(true);
+		result.setResult(servers);
+		return result;
 	}
 
 	@Override
 	public ServiceResult queryCpuService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		result.setSuccessed(true);
+		result.setResult(cpuInfo);
+		return result;
 	}
 
 	@Override
 	public ServiceResult queryMemoryService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		result.setSuccessed(true);
+		result.setResult(memoryInfo);
+		return result;
 	}
 
 	@Override
 	public ServiceResult queryProcessService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		result.setSuccessed(true);
+		result.setResult(processInfo);
+		return result;
 	}
 
 	@Override
 	public ServiceResult queryJvmMemoryService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		result.setSuccessed(true);
+		result.setResult(jvmMemoryInfo);
+		return result;
 	}
 
 	@Override
 	public ServiceResult queryJvmThreadService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		result.setSuccessed(true);
+		result.setResult(jvmThreadInfo);
+		return result;
 	}
 
 	@Override
 	public ServiceResult queryJvmClassService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		result.setSuccessed(true);
+		result.setResult(jvmClassLoad);
+		return result;
 	}
 
 	@Override
@@ -88,14 +132,31 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Scheduled(cron="* * * * * *")
 	public void heartbeatTask(){
-		for(ServerInfo serverInfo:serversInfo){
-			System.out.println(serverInfo);
+		for(ServerInfo server:servers){
+			if(!server.isAvailable()){
+				IMonitorController serverRemote=getRemote(server);
+				if(serverRemote!=null){
+					server.setAvailable(true);
+					server.setRemote(serverRemote);
+				}
+			}
+			else{
+				try{
+					server.setAvailable(server.getRemote().heartbeatController());
+				}catch(Exception ex){
+					server.setAvailable(false);
+				}
+			}
 		}
 	}
 	
 	@Scheduled(cron="* * * * * *")
 	public void getCpuInfoTask(){
-		
+		try{
+			CpuInfo cpu=currentServer.queryCpuController();
+			addObject2List(cpuInfo,cpu);
+		}catch(Exception ex){
+		}
 	}
 	
 	@Scheduled(cron="* * * * * *")
@@ -121,5 +182,12 @@ public class MonitorServiceImpl implements IMonitorService {
 	@Scheduled(cron="* * * * * *")
 	public void getJvmClassLoadInfoTask(){
 		
+	}
+	
+	private void addObject2List(List list,Object object){
+		if(list.size()>=IConstant.LIST_SIZE){
+			list.remove(0);
+		}
+		list.add(object);
 	}
 }
