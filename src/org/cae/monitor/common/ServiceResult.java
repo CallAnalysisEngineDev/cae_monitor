@@ -13,6 +13,9 @@ public class ServiceResult {
 	private String errInfo;
 	private Map<String,Object> extraInfo;
 	public ServiceResult(){}
+	public ServiceResult(boolean successed){
+		this.successed=successed;
+	}
 	public ServiceResult(DaoResult daoResult){
 		this.successed=daoResult.isSuccessed();
 		this.result=daoResult.getResult();

@@ -5,6 +5,10 @@ public class JVMThread extends Entity {
 	private String time;
 	private Integer jvmDamonThreadCount;
 	private Integer jvmActiveThreadCount;
+	public JVMThread(){}
+	public JVMThread(String time) {
+		this.time=time;
+	}
 	public String getTime() {
 		return time;
 	}

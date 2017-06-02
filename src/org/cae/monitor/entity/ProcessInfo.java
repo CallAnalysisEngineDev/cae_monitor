@@ -8,6 +8,10 @@ public class ProcessInfo extends Entity {
 	private String processStartTime;
 	private double processMemoryRate;
 	private double processCpuRate;
+	public ProcessInfo(){}
+	public ProcessInfo(String time) {
+		this.time=time;
+	}
 	public String getTime() {
 		return time;
 	}

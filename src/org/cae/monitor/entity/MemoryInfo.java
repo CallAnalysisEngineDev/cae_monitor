@@ -7,6 +7,10 @@ public class MemoryInfo extends Entity {
 	private double memoryFree;
 	private double swapUse;
 	private double swapFree;
+	public MemoryInfo(){}
+	public MemoryInfo(String time){
+		this.time=time;
+	}
 	public String getTime() {
 		return time;
 	}

@@ -6,13 +6,23 @@ import org.cae.monitor.remote.IMonitorController;
 public class ServerInfo extends Entity{
 
 	private boolean available;
+	private String serverId;
 	private String serverName;
 	private String serverIp;
 	private String serverPort;
 	private String serverGroup;
 	private IMonitorController remote;
+	public ServerInfo(){
+		this.serverId=Util.getCharId(10);
+	}
 	public boolean isAvailable() {
 		return available;
+	}
+	public String getServerId() {
+		return serverId;
+	}
+	public void setServerId(String serverId) {
+		this.serverId = serverId;
 	}
 	public void setAvailable(boolean available) {
 		this.available = available;

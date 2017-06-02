@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.cae.monitor.common.IConstant;
 import org.cae.monitor.common.ServerInfo;
 import org.cae.monitor.common.ServiceResult;
+import org.cae.monitor.common.Util;
 import org.cae.monitor.entity.CpuInfo;
 import org.cae.monitor.entity.JVMClassLoad;
 import org.cae.monitor.entity.JVMMemory;
@@ -34,7 +35,7 @@ public class MonitorServiceImpl implements IMonitorService {
 	private static List<ProcessInfo> processInfo = new LinkedList<ProcessInfo>();
 	private static List<JVMMemory> jvmMemoryInfo = new LinkedList<JVMMemory>();
 	private static List<JVMThread> jvmThreadInfo = new LinkedList<JVMThread>();
-	private static List<JVMClassLoad> jvmClassLoad = new LinkedList<JVMClassLoad>();
+	private static List<JVMClassLoad> jvmClassLoadInfo = new LinkedList<JVMClassLoad>();
 	
 	@PostConstruct
 	public void init(){
@@ -64,8 +65,14 @@ public class MonitorServiceImpl implements IMonitorService {
 	
 	@Override
 	public ServiceResult queryForHomepageService() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result=new ServiceResult();
+		try{
+			result.setSuccessed(true);
+			result.setResult(currentServer.queryForHomepageController());
+		}catch(Exception ex){
+			result.setSuccessed(false);
+		}
+		return result;
 	}
 
 	@Override
@@ -120,14 +127,24 @@ public class MonitorServiceImpl implements IMonitorService {
 	public ServiceResult queryJvmClassService() {
 		ServiceResult result=new ServiceResult();
 		result.setSuccessed(true);
-		result.setResult(jvmClassLoad);
+		result.setResult(jvmClassLoadInfo);
 		return result;
 	}
 
 	@Override
 	public ServiceResult exchangeService(ServerInfo serverInfo) {
-		// TODO Auto-generated method stub
-		return null;
+		for(ServerInfo server:servers){
+			if(serverInfo.getServerId().equals(server.getServerId())){
+				currentServer=server.getRemote();
+			}
+		}
+		cpuInfo.clear();
+		memoryInfo.clear();
+		processInfo.clear();
+		jvmMemoryInfo.clear();
+		jvmThreadInfo.clear();
+		jvmClassLoadInfo.clear();
+		return new ServiceResult(true);
 	}
 
 	@Scheduled(cron="* * * * * *")
@@ -156,32 +173,58 @@ public class MonitorServiceImpl implements IMonitorService {
 			CpuInfo cpu=currentServer.queryCpuController();
 			addObject2List(cpuInfo,cpu);
 		}catch(Exception ex){
+			addObject2List(cpuInfo,new CpuInfo(Util.getNowTime()));
 		}
 	}
 	
 	@Scheduled(cron="* * * * * *")
 	public void getMemoryInfoTask(){
-		
+		try{
+			MemoryInfo memory=currentServer.queryMemoryController();
+			addObject2List(memoryInfo,memory);
+		}catch(Exception ex){
+			addObject2List(memoryInfo,new MemoryInfo(Util.getNowTime()));
+		}
 	}
 	
 	@Scheduled(cron="* * * * * *")
 	public void getProcessInfoTask(){
-		
+		try{
+			ProcessInfo process=currentServer.queryProcessController();
+			addObject2List(processInfo, process);
+		}catch(Exception ex){
+			addObject2List(processInfo, new ProcessInfo(Util.getNowTime()));
+		}
 	}
 	
 	@Scheduled(cron="* * * * * *")
 	public void getJvmMemoryInfoTask(){
-		
+		try{
+			JVMMemory jvmMemory=currentServer.queryJvmMemoryController();
+			addObject2List(jvmMemoryInfo, jvmMemory);
+		}catch(Exception ex){
+			addObject2List(jvmMemoryInfo,new JVMMemory(Util.getNowTime()));
+		}
 	}
 	
 	@Scheduled(cron="* * * * * *")
 	public void getJvmThreadInfoTask(){
-		
+		try{
+			JVMThread jvmThread=currentServer.queryJvmThreadController();
+			addObject2List(jvmThreadInfo, jvmThread);
+		}catch(Exception ex){
+			addObject2List(jvmThreadInfo, new JVMThread(Util.getNowTime()));
+		}
 	}
 	
 	@Scheduled(cron="* * * * * *")
 	public void getJvmClassLoadInfoTask(){
-		
+		try{
+			JVMClassLoad jvmClassLoad=currentServer.queryJvmClassController();
+			addObject2List(jvmClassLoadInfo, jvmClassLoad);
+		}catch(Exception ex){
+			addObject2List(jvmClassLoadInfo, new JVMClassLoad(Util.getNowTime()));
+		}
 	}
 	
 	private void addObject2List(List list,Object object){

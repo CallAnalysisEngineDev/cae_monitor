@@ -14,8 +14,7 @@
 
 	<context:component-scan base-package="org.cae.monitor.controller.impl"/>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-		p:prefix="/"
-		p:suffix=".jsp"/>
+		p:prefix="/"/>
 	<mvc:annotation-driven>
 	    <mvc:message-converters>
 	        <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>

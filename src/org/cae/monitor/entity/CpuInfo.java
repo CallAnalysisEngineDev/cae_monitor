@@ -25,6 +25,11 @@ public class CpuInfo extends Entity {
 		}
 	}
 
+	public CpuInfo(){}
+	public CpuInfo(String time){
+		this.time=time;
+	}
+	
 	public String getTime() {
 		return time;
 	}

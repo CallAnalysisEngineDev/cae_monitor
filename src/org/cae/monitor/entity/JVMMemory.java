@@ -7,6 +7,10 @@ public class JVMMemory extends Entity {
 	private double survivorRate;
 	private double oldGenRate;
 	private double permGenRate;
+	public JVMMemory(){}
+	public JVMMemory(String time) {
+		this.time=time;
+	}
 	public String getTime() {
 		return time;
 	}
