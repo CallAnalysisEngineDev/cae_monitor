@@ -14,6 +14,8 @@ import org.cae.monitor.entity.Entity;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Util {
@@ -27,6 +29,16 @@ public class Util {
 			return mapper.writeValueAsString(target);
 		}catch(Exception ex){
 			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static <T> T toObject(String json,Class<T> clazz){
+		ObjectMapper mapper=new ObjectMapper();
+		try {
+			return mapper.readValue(json, clazz);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

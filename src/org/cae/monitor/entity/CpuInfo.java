@@ -2,13 +2,13 @@ package org.cae.monitor.entity;
 
 import java.util.List;
 
-public class CpuInfo extends Entity {
+public class CpuInfo extends Entity{
 
 	private String time;
 	private List<Cpu> cpus;
 	private double cpuTotalUseRate;
 	
-	class Cpu{
+	public static class Cpu{
 		private String cpuType;
 		private double useRate;
 		public String getCpuType() {

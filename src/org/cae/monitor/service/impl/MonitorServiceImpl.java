@@ -170,7 +170,8 @@ public class MonitorServiceImpl implements IMonitorService {
 	@Scheduled(cron="* * * * * *")
 	public void getCpuInfoTask(){
 		try{
-			CpuInfo cpu=currentServer.queryCpuController();
+			String result=currentServer.queryCpuController();
+			CpuInfo cpu=Util.toObject(result, CpuInfo.class);
 			addObject2List(cpuInfo,cpu);
 		}catch(Exception ex){
 			addObject2List(cpuInfo,new CpuInfo(Util.getNowTime()));
@@ -180,7 +181,8 @@ public class MonitorServiceImpl implements IMonitorService {
 	@Scheduled(cron="* * * * * *")
 	public void getMemoryInfoTask(){
 		try{
-			MemoryInfo memory=currentServer.queryMemoryController();
+			String result=currentServer.queryMemoryController();
+			MemoryInfo memory=Util.toObject(result, MemoryInfo.class);
 			addObject2List(memoryInfo,memory);
 		}catch(Exception ex){
 			addObject2List(memoryInfo,new MemoryInfo(Util.getNowTime()));
@@ -190,7 +192,8 @@ public class MonitorServiceImpl implements IMonitorService {
 	@Scheduled(cron="* * * * * *")
 	public void getProcessInfoTask(){
 		try{
-			ProcessInfo process=currentServer.queryProcessController();
+			String result=currentServer.queryProcessController();
+			ProcessInfo process=Util.toObject(result, ProcessInfo.class);
 			addObject2List(processInfo, process);
 		}catch(Exception ex){
 			addObject2List(processInfo, new ProcessInfo(Util.getNowTime()));
@@ -200,7 +203,8 @@ public class MonitorServiceImpl implements IMonitorService {
 	@Scheduled(cron="* * * * * *")
 	public void getJvmMemoryInfoTask(){
 		try{
-			JVMMemory jvmMemory=currentServer.queryJvmMemoryController();
+			String result=currentServer.queryJvmMemoryController();
+			JVMMemory jvmMemory=Util.toObject(result, JVMMemory.class);
 			addObject2List(jvmMemoryInfo, jvmMemory);
 		}catch(Exception ex){
 			addObject2List(jvmMemoryInfo,new JVMMemory(Util.getNowTime()));
@@ -210,7 +214,8 @@ public class MonitorServiceImpl implements IMonitorService {
 	@Scheduled(cron="* * * * * *")
 	public void getJvmThreadInfoTask(){
 		try{
-			JVMThread jvmThread=currentServer.queryJvmThreadController();
+			String result=currentServer.queryJvmThreadController();
+			JVMThread jvmThread=Util.toObject(result, JVMThread.class);
 			addObject2List(jvmThreadInfo, jvmThread);
 		}catch(Exception ex){
 			addObject2List(jvmThreadInfo, new JVMThread(Util.getNowTime()));
@@ -220,14 +225,15 @@ public class MonitorServiceImpl implements IMonitorService {
 	@Scheduled(cron="* * * * * *")
 	public void getJvmClassLoadInfoTask(){
 		try{
-			JVMClassLoad jvmClassLoad=currentServer.queryJvmClassController();
+			String result=currentServer.queryJvmClassController();
+			JVMClassLoad jvmClassLoad=Util.toObject(result, JVMClassLoad.class);
 			addObject2List(jvmClassLoadInfo, jvmClassLoad);
 		}catch(Exception ex){
 			addObject2List(jvmClassLoadInfo, new JVMClassLoad(Util.getNowTime()));
 		}
 	}
 	
-	private void addObject2List(List list,Object object){
+	private <T> void addObject2List(List<T> list,T object){
 		if(list.size()>=IConstant.LIST_SIZE){
 			list.remove(0);
 		}
