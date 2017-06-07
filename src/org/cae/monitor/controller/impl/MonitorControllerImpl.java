@@ -35,7 +35,7 @@ public class MonitorControllerImpl implements IMonitorController {
 		if(result.isSuccessed()){
 			mav.addObject("result", Util.toJson(result.getResult()));
 		}
-		mav.setViewName("WEB-INF/inedx.jsp");
+		mav.setViewName("WEB-INF/index.jsp");
 		return mav;
 	}
 
