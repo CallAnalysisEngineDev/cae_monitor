@@ -1,15 +1,27 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-  	<base href="">
-    <title>cae管理员端</title>
+  	<base href="<%=basePath%>">
+    <title>cae监控系统</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   
   <body>
   	<center>
-  		<div class="page-header"><h1>管理员登录</h1></div>
+  		<div class="page-header"><h1>管理员登录</h1></div>
+  		<c:if test="${!empty errInfo}">
+	  		<div class="alert alert-danger alert-dismissible" role="alert" style="width:60%">
+	  			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  			请先登录!
+	  		</div>
+  		</c:if>
   		<div class="input-group" style="width:30%">
   			<span class="input-group-addon" id="basic-addon1">账号:</span>
   			<input id="useraccount" type="text" class="form-control" placeholder="请输入管理员账号" aria-describedby="basic-addon1">
@@ -34,7 +46,7 @@
     	login.login_1();
     }
     $(document).keyup(function(event){
-  		if(event.keyCode ==13){
+  		if(event.keyCode==13){
   			shakeHand();
   		}
 	});

@@ -27,7 +27,8 @@ public class MonitorControllerImpl implements IMonitorController {
 	public ModelAndView queryForHomepageController(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
 		if(session.getAttribute("adminId")==null){
-			mav.setViewName("login.html");
+			mav.addObject("errInfo", "请先登录!");
+			mav.setViewName("login.jsp");
 			return mav;
 		}
 		ServiceResult result=monitorService.queryForHomepageService();
