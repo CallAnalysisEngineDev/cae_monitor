@@ -23,7 +23,7 @@ public class MonitorControllerImpl implements IMonitorController {
 	private IMonitorService monitorService;
 	
 	@Override
-	@RequestMapping
+	@RequestMapping("/index")
 	public ModelAndView queryForHomepageController(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
 		if(session.getAttribute("adminId")==null){

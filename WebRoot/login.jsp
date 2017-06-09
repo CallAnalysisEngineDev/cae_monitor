@@ -19,9 +19,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<c:if test="${!empty errInfo}">
 	  		<div class="alert alert-danger alert-dismissible" role="alert" style="width:60%">
 	  			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  			请先登录!
+	  			<strong>请先登录!</strong>
 	  		</div>
   		</c:if>
+  		<div class="alert alert-danger alert-dismissible" role="alert" style="width:60%" hidden id="error">
+	  		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  		<strong id="errInfo"></strong>
+	  	</div>
   		<div class="input-group" style="width:30%">
   			<span class="input-group-addon" id="basic-addon1">账号:</span>
   			<input id="useraccount" type="text" class="form-control" placeholder="请输入管理员账号" aria-describedby="basic-addon1">
@@ -32,7 +36,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
     	<input type="button" onclick="shakeHand()" value="登录" class="btn btn-primary btn-lg"/>
   	</center>
-  	<form action="admin/all" method="post" id="admin_login_form"></form>
+  	<form action="index" method="post" id="admin_login_form"></form>
   </body>
   <script type="text/javascript" src="http://liuyang-anime.cn:81/jquery-1.11.1.min.js"></script>
   <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
