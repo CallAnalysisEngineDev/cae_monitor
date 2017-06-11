@@ -2,22 +2,11 @@ package org.cae.monitor.entity;
 
 public class ProcessInfo extends Entity {
 
-	private String time;
 	private String processName;
 	private String processId;
 	private String processStartTime;
 	private double processMemoryRate;
 	private double processCpuRate;
-	public ProcessInfo(){}
-	public ProcessInfo(String time) {
-		this.time=time;
-	}
-	public String getTime() {
-		return time;
-	}
-	public void setTime(String time) {
-		this.time = time;
-	}
 	public String getProcessName() {
 		return processName;
 	}

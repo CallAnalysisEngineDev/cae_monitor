@@ -193,10 +193,9 @@ public class MonitorServiceImpl implements IMonitorService {
 	public void getProcessInfoTask(){
 		try{
 			String result=currentServer.queryProcessController();
-			ProcessInfo process=Util.toObject(result, ProcessInfo.class);
-			addObject2List(processInfo, process);
+			List<ProcessInfo> process=Util.toObject(result, List.class);
+			this.processInfo=process;
 		}catch(Exception ex){
-			addObject2List(processInfo, new ProcessInfo(Util.getNowTime()));
 		}
 	}
 	

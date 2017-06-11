@@ -16,7 +16,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     <center>
-    	<div class="page-header"><h1>cae监控系统</h1></div>
+    	<div class="page-header">
+    		<h1>cae监控系统</h1>
+    	</div>
     	<div class="panel panel-primary">
     		<div class="panel-heading">机器静态信息</div>
     		<div class="panel-body">
@@ -65,11 +67,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	<div class="panel panel-primary">
 	    		<div class="panel-heading">进程信息</div>
 	    		<div class="panel-body">
-					<div id="process" style="width:100%;height:50%"></div>
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<td>进程名</td>
+								<td>进程id</td>
+								<td>进程开始时间</td>
+								<td>进程占用内存</td>
+								<td>进程占用CPU</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+							</tr>
+							<tr>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+							</tr>
+							<tr>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+								<td>kuma</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 	    	</div>
     	</div>
-    	<hr style="height:1px;border:none;border-top:1px solid #0000FF;"/>
+    	<hr style="height:1px;border:none;border-top:1px solid #0000FF;" />
     	<div class="panel panel-primary">
     		<div class="panel-heading">JVM信息</div>
     		<div class="panel-body">
@@ -85,10 +120,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		</div>
     	</div>
     	<hr style="height:1px;border:none;border-top:1px solid #0000FF;"/>
-    	<div class="panel">
-    		<div class="row">
+    	<div class="panel panel-primary">
+    		<div class="panel-heading">jvm内存</div>
+    		<div class="panel-body row">
     			<div class="col-md-6">
-    				<div class="panel panel-primary">
+    				<div class="panel panel-info">
 	    				<div class="panel-heading">eden块</div>
 	    				<div class="panel-body">
 							<div id="eden" style="width:100%;height:50%"></div>
@@ -96,7 +132,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				</div>
     			</div>
     			<div class="col-md-6">
-    				<div class="panel panel-primary">
+    				<div class="panel panel-info">
 			    		<div class="panel-heading">survivor块</div>
 			    		<div class="panel-body">
 			    			<div id="survivor" style="width:100%;height:50%"></div>
@@ -106,7 +142,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		</div>
     		<div class="row">
     			<div class="col-md-6">
-    				<div class="panel panel-primary">
+    				<div class="panel panel-info">
     					<div class="panel-heading">old块</div>
     					<div class="panel-body">
     						<div id="old" style="width:100%;height:50%"></div>
@@ -114,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				</div>
     			</div>
     			<div class="col-md-6">
-    				<div class="panel panel-primary">
+    				<div class="panel panel-info">
     					<div class="panel-heading">持久代</div>
     					<div class="panel-body">
     						<div id="perm" style="width:100%;height:50%"></div>
@@ -245,13 +281,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script type="text/javascript">
 	  var dom1 = document.getElementById("cpu");
 	  var dom2 = document.getElementById("memory");
-	  var dom3 = document.getElementById("process");
-	  var dom4 = document.getElementById("eden");
-	  var dom5 = document.getElementById("survivor");
-	  var dom6 = document.getElementById("old");
-	  var dom7 = document.getElementById("perm");
-	  var dom8 = document.getElementById("jvm_thread");
-	  var dom9 = document.getElementById("jvm_class");
+	  var dom3 = document.getElementById("eden");
+	  var dom4 = document.getElementById("survivor");
+	  var dom5 = document.getElementById("old");
+	  var dom6 = document.getElementById("perm");
+	  var dom7 = document.getElementById("jvm_thread");
+	  var dom8 = document.getElementById("jvm_class");
 	  var myChart1 = echarts.init(dom1);
 	  var myChart2 = echarts.init(dom2);
 	  var myChart3 = echarts.init(dom3);
@@ -260,7 +295,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  var myChart6 = echarts.init(dom6);
 	  var myChart7 = echarts.init(dom7);
 	  var myChart8 = echarts.init(dom8);
-	  var myChart9 = echarts.init(dom9);
 	  var app = {};
 	  option = null;
 	
@@ -365,11 +399,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	              data: data
 	          }]
 	      });
-	      myChart9.setOption({
-	          series: [{
-	              data: data
-	          }]
-	      });
 	  }, 1000);
 	  if (option && typeof option === "object") {
 	      myChart1.setOption(option, true);
@@ -380,7 +409,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      myChart6.setOption(option, true);
 	      myChart7.setOption(option, true);
 	      myChart8.setOption(option, true);
-	      myChart9.setOption(option, true);
 	  }
   </script>
 </html>
