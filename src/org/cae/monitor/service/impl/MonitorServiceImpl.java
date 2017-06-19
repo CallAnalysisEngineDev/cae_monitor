@@ -9,7 +9,8 @@ import javax.annotation.Resource;
 import org.cae.monitor.common.IConstant;
 import org.cae.monitor.common.ServerInfo;
 import org.cae.monitor.common.ServiceResult;
-import org.cae.monitor.common.Util;
+import static org.cae.monitor.common.Util.getNowTime;
+import static org.cae.monitor.common.Util.toObject;
 import org.cae.monitor.entity.CpuInfo;
 import org.cae.monitor.entity.JVMClassLoad;
 import org.cae.monitor.entity.JVMMemory;
@@ -171,10 +172,10 @@ public class MonitorServiceImpl implements IMonitorService {
 	public void getCpuInfoTask(){
 		try{
 			String result=currentServer.queryCpuController();
-			CpuInfo cpu=Util.toObject(result, CpuInfo.class);
+			CpuInfo cpu=toObject(result, CpuInfo.class);
 			addObject2List(cpuInfo,cpu);
 		}catch(Exception ex){
-			addObject2List(cpuInfo,new CpuInfo(Util.getNowTime()));
+			addObject2List(cpuInfo,new CpuInfo(getNowTime()));
 		}
 	}
 	
@@ -182,10 +183,10 @@ public class MonitorServiceImpl implements IMonitorService {
 	public void getMemoryInfoTask(){
 		try{
 			String result=currentServer.queryMemoryController();
-			MemoryInfo memory=Util.toObject(result, MemoryInfo.class);
+			MemoryInfo memory=toObject(result, MemoryInfo.class);
 			addObject2List(memoryInfo,memory);
 		}catch(Exception ex){
-			addObject2List(memoryInfo,new MemoryInfo(Util.getNowTime()));
+			addObject2List(memoryInfo,new MemoryInfo(getNowTime()));
 		}
 	}
 	
@@ -193,7 +194,7 @@ public class MonitorServiceImpl implements IMonitorService {
 	public void getProcessInfoTask(){
 		try{
 			String result=currentServer.queryProcessController();
-			List<ProcessInfo> process=Util.toObject(result, List.class);
+			List<ProcessInfo> process=toObject(result, List.class);
 			this.processInfo=process;
 		}catch(Exception ex){
 		}
@@ -203,10 +204,10 @@ public class MonitorServiceImpl implements IMonitorService {
 	public void getJvmMemoryInfoTask(){
 		try{
 			String result=currentServer.queryJvmMemoryController();
-			JVMMemory jvmMemory=Util.toObject(result, JVMMemory.class);
+			JVMMemory jvmMemory=toObject(result, JVMMemory.class);
 			addObject2List(jvmMemoryInfo, jvmMemory);
 		}catch(Exception ex){
-			addObject2List(jvmMemoryInfo,new JVMMemory(Util.getNowTime()));
+			addObject2List(jvmMemoryInfo,new JVMMemory(getNowTime()));
 		}
 	}
 	
@@ -214,10 +215,10 @@ public class MonitorServiceImpl implements IMonitorService {
 	public void getJvmThreadInfoTask(){
 		try{
 			String result=currentServer.queryJvmThreadController();
-			JVMThread jvmThread=Util.toObject(result, JVMThread.class);
+			JVMThread jvmThread=toObject(result, JVMThread.class);
 			addObject2List(jvmThreadInfo, jvmThread);
 		}catch(Exception ex){
-			addObject2List(jvmThreadInfo, new JVMThread(Util.getNowTime()));
+			addObject2List(jvmThreadInfo, new JVMThread(getNowTime()));
 		}
 	}
 	
@@ -225,10 +226,10 @@ public class MonitorServiceImpl implements IMonitorService {
 	public void getJvmClassLoadInfoTask(){
 		try{
 			String result=currentServer.queryJvmClassController();
-			JVMClassLoad jvmClassLoad=Util.toObject(result, JVMClassLoad.class);
+			JVMClassLoad jvmClassLoad=toObject(result, JVMClassLoad.class);
 			addObject2List(jvmClassLoadInfo, jvmClassLoad);
 		}catch(Exception ex){
-			addObject2List(jvmClassLoadInfo, new JVMClassLoad(Util.getNowTime()));
+			addObject2List(jvmClassLoadInfo, new JVMClassLoad(getNowTime()));
 		}
 	}
 	

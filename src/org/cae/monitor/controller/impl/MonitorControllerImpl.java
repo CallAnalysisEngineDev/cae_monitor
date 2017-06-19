@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.cae.monitor.common.ServerInfo;
 import org.cae.monitor.common.ServiceResult;
-import org.cae.monitor.common.Util;
+import static org.cae.monitor.common.Util.toJson;
 import org.cae.monitor.controller.IMonitorController;
 import org.cae.monitor.service.IMonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class MonitorControllerImpl implements IMonitorController {
 		ServiceResult result=monitorService.queryForHomepageService();
 		mav.addObject("success", result.isSuccessed());
 		if(result.isSuccessed()){
-			mav.addObject("result", Util.toJson(result.getResult()));
+			mav.addObject("result", toJson(result.getResult()));
 		}
 		mav.setViewName("WEB-INF/index.jsp");
 		return mav;

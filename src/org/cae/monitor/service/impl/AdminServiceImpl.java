@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 import org.cae.monitor.common.DaoResult;
 import org.cae.monitor.common.ServiceResult;
-import org.cae.monitor.common.Util;
+import static org.cae.monitor.common.Util.toObject;
 import org.cae.monitor.dao.IAdminDao;
 import org.cae.monitor.entity.Admin;
 import org.cae.monitor.security.Desede;
@@ -33,7 +33,7 @@ public class AdminServiceImpl implements IAdminService {
 	public ServiceResult loginService(ShakeHand shakeHand) {
 		ServiceResult theResult = null;
 		//先把客户端传来的json字符串转换为java的map
-		Map<String,Object> map=Util.toObject(shakeHand.getMessage(), Map.class);
+		Map<String,Object> map=toObject(shakeHand.getMessage(), Map.class);
 		//获取经过加密的对称秘钥并使用rsa的秘钥解密,得到真实的对称秘钥
 		String key=rsa.decrypt((String)map.get("k"));
 		//实例化一个3DES算法的实例,并把对称秘钥通过构造函数注入进去
