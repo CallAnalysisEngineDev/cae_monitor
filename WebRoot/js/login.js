@@ -115,7 +115,7 @@ var Login = (function(){
 			"p":encryptAdminUserPassword,
 			"k":encryptKey
 		};
-		//将formData转换成字符串后进行MD5加密以用于后续服务器校验数据完整性
+		//将formData转换成字符串后进行MD5加密以用于后续服务器校验数据完整性 
 		var encryptCheckEncode=encrypt.encrypt_MD5(JSON.stringify(formData));
 		//将formData转换成字符串后放入一个新的json中,这个json就是用来传给服务器的了
 		var data={
