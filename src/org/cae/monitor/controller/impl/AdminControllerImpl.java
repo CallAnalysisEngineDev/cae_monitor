@@ -5,7 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.cae.monitor.common.ServiceResult;
+import org.cae.monitor.common.Util;
 import org.cae.monitor.controller.IAdminController;
 import org.cae.monitor.entity.Admin;
 import org.cae.monitor.security.SecurityAlgorithm;
@@ -17,13 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 @RequestMapping("/admin")
 public class AdminControllerImpl implements IAdminController {
 
 	@Autowired
 	private IAdminService adminService;
-	
+	private Logger logger=Logger.getLogger(this.getClass());
 	/**
 	 * 管理员登录过程的服务器端握手方法
 	 */
@@ -35,8 +38,10 @@ public class AdminControllerImpl implements IAdminController {
 		//因为握手分多个阶段,每个阶段附带的信息内容、含义以及处理逻辑都不同,所以需要根据类型(即ShakeHand的type)来进行不同的处理
 		Integer type=shakeHand.getType();
 		if(type==SecurityAlgorithm.ASK_PUBKEY){
-			//获取服务器自己的公钥并返回
-			theResult.put("publicKey", adminService.getPublicKeyService());
+			//获取服务器自己的公钥和MD5加密后的公钥并返回
+			String publicKey=adminService.getPublicKeyService().replaceAll("\r|\n", "");
+			theResult.put("publicKey", publicKey);
+			theResult.put("extra",Util.md5(publicKey) );
 		}
 		else if(type==SecurityAlgorithm.ENCTYPT_DATA){
 			//这个分支就代表客户端已经把账号、密码和对称秘钥都发过来了
