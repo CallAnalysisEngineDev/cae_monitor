@@ -101,7 +101,7 @@ var Login = (function(){
 
 		}
 		//对数据完整性做检查
-		if(encrypt.encrypt_MD5(data.publicKey)==data.extra){
+		if(encrypt.encrypt_MD5(data.publicKey)==data.summary){
 		//使用公钥对对称秘钥进行非对称加密加密
 		var encryptKey=encrypt.encrypt_RSA(Common.key.value);
 		//使用3DES对管理员账号进行加密
