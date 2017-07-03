@@ -5,8 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.cae.monitor.common.DaoResult;
 import org.cae.monitor.common.ServiceResult;
+import org.cae.monitor.common.Util;
 
 import static org.cae.monitor.common.Util.toObject;
 import org.cae.monitor.dao.IAdminDao;
@@ -17,9 +19,11 @@ import org.cae.monitor.security.ShakeHand;
 import org.cae.monitor.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import static org.cae.monitor.common.Util.*;
+
+
 @Service("adminService")
 public class AdminServiceImpl implements IAdminService {
+	private Logger logger=Logger.getLogger(this.getClass());
 	private ConcurrentHashMap<Integer, SecurityAlgorithm> keys=new ConcurrentHashMap<Integer, SecurityAlgorithm>();
 	@Autowired
 	private IAdminDao adminDao;
@@ -32,7 +36,7 @@ public class AdminServiceImpl implements IAdminService {
 	@Override
 	public ServiceResult loginService(ShakeHand shakeHand) {
 			ServiceResult theResult = null;
-			if(shakeHand.getExtra().equals(md5(shakeHand.getMessage()))){
+			if(shakeHand.getSummary().equals(Util.md5(shakeHand.getMessage()))){
 				//先把客户端传来的json字符串转换为java的map
 				Map<String,Object> map=toObject(shakeHand.getMessage(), Map.class);
 				//获取经过加密的对称秘钥并使用rsa的秘钥解密,得到真实的对称秘钥
