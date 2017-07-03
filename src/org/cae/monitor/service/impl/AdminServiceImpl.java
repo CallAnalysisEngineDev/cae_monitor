@@ -56,9 +56,10 @@ public class AdminServiceImpl implements IAdminService {
 				}
 				theResult=new ServiceResult(daoResult);
 				return theResult;
-			}
+			}else{
 			theResult=new ServiceResult(new DaoResult(false, "数据校验失败"));
 			return theResult;
+			}
 	}
 	
 	@Override
