@@ -96,7 +96,7 @@ var Login = (function(){
 	function login_2(data){
 		//data即从服务器中拿到的公钥
 		//如果确实拿到了公钥,则将其set进encrypt成员中,以便之后的对称加密
-		if(data.publicKey!=null&&data.extra!=null){
+		if(data.publicKey!=null&&data.summary!=null){
 	        	encrypt.setPublicKey(data.publicKey);
 
 		}
@@ -121,7 +121,7 @@ var Login = (function(){
 		var data={
 			"type":Common.ENCTYPT_DATA,//这个type标志证明这个请求时包含了账号、密码和对称秘钥的信息
 			"message":JSON.stringify(formData),
-			"extra":encryptCheckEncode
+			"summary":encryptCheckEncode
 		};
 		Common.ajax("admin/shakeHand", "post", data, login_3);
 		}else{

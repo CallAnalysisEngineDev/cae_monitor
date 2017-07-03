@@ -36,7 +36,7 @@ public class AdminServiceImpl implements IAdminService {
 	@Override
 	public ServiceResult loginService(ShakeHand shakeHand) {
 			ServiceResult theResult = null;
-			if(shakeHand.getExtra().equals(Util.md5(shakeHand.getMessage()))){
+			if(shakeHand.getSummary().equals(Util.md5(shakeHand.getMessage()))){
 				//先把客户端传来的json字符串转换为java的map
 				Map<String,Object> map=toObject(shakeHand.getMessage(), Map.class);
 				//获取经过加密的对称秘钥并使用rsa的秘钥解密,得到真实的对称秘钥
