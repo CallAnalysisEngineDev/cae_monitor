@@ -19,8 +19,7 @@ import org.cae.monitor.security.ShakeHand;
 import org.cae.monitor.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.cae.monitor.common.Util.*;
+
 
 @Service("adminService")
 public class AdminServiceImpl implements IAdminService {

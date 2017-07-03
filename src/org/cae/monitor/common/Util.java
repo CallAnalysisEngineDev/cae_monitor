@@ -14,8 +14,6 @@ import org.cae.monitor.entity.Entity;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Util {
