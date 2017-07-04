@@ -175,7 +175,7 @@ public class MonitorServiceImpl implements IMonitorService {
 			CpuInfo cpu=toObject(result, CpuInfo.class);
 			addObject2List(cpuInfo,cpu);
 		}catch(Exception ex){
-			addObject2List(cpuInfo,new CpuInfo(getNowTime()));
+			addObject2List(cpuInfo,new CpuInfo.Builder().time(getNowTime()).build());
 		}
 	}
 	
@@ -186,7 +186,7 @@ public class MonitorServiceImpl implements IMonitorService {
 			MemoryInfo memory=toObject(result, MemoryInfo.class);
 			addObject2List(memoryInfo,memory);
 		}catch(Exception ex){
-			addObject2List(memoryInfo,new MemoryInfo(getNowTime()));
+			addObject2List(memoryInfo,new MemoryInfo.Builder().time(getNowTime()).build());
 		}
 	}
 	
@@ -207,7 +207,7 @@ public class MonitorServiceImpl implements IMonitorService {
 			JVMMemory jvmMemory=toObject(result, JVMMemory.class);
 			addObject2List(jvmMemoryInfo, jvmMemory);
 		}catch(Exception ex){
-			addObject2List(jvmMemoryInfo,new JVMMemory(getNowTime()));
+			addObject2List(jvmMemoryInfo,new JVMMemory.Builder().time(getNowTime()).build());
 		}
 	}
 	
@@ -218,7 +218,7 @@ public class MonitorServiceImpl implements IMonitorService {
 			JVMThread jvmThread=toObject(result, JVMThread.class);
 			addObject2List(jvmThreadInfo, jvmThread);
 		}catch(Exception ex){
-			addObject2List(jvmThreadInfo, new JVMThread(getNowTime()));
+			addObject2List(jvmThreadInfo, new JVMThread.Builder().time(getNowTime()).build());
 		}
 	}
 	
