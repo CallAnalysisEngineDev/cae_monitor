@@ -14,9 +14,11 @@
 	http://www.springframework.org/schema/task  
 	http://www.springframework.org/schema/task/spring-task-4.2.xsd ">
     
+    <!-- 监控的应用服务器列表配置 -->
     <bean id="serversInfo" class="java.util.ArrayList" scope="singleton">
     	<constructor-arg>
     		<list>
+    			<!-- 以后要监控几台服务器就要在这里加多少个ref节点 -->
     			<ref bean="server1"/>
     		</list>
     	</constructor-arg>
@@ -27,6 +29,7 @@
     	<property name="serverPort"><value>8001</value></property>
     	<property name="serverGroup"><value>default</value></property>
     </bean>
+    <!-- Spring RMI的工厂配置 -->
     <bean id="rmiBeanFactory" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
     	<property name="serviceInterface" value="org.cae.monitor.remote.IMonitorController"/>
     	<property name="serviceUrl" value=""/>
