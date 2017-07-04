@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.cae.monitor.common.DaoResult;
+import org.cae.monitor.common.Generator;
+
 import static org.cae.monitor.common.Util.*;
+
 import org.cae.monitor.dao.IAdminDao;
 import org.cae.monitor.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +47,7 @@ public class AdminDaoImpl implements IAdminDao {
 			
 			@Override
 			public Admin mapRow(ResultSet rs, int row) throws SQLException {
-				return new Admin(rs.getInt("admin_id"));
+				return Generator.admin(rs.getInt("admin_id"));
 			}
 			
 		});
