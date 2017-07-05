@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.cae.monitor.common.IConstant;
 import org.cae.monitor.common.ServerInfo;
 import org.cae.monitor.common.ServiceResult;
 import static org.cae.monitor.common.Util.getNowTime;
@@ -22,6 +21,8 @@ import org.cae.monitor.service.IMonitorService;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import static org.cae.monitor.common.IConstant.LIST_SIZE;
 
 @Service("monitorService")
 public class MonitorServiceImpl implements IMonitorService {
@@ -234,7 +235,7 @@ public class MonitorServiceImpl implements IMonitorService {
 	}
 	
 	private <T> void addObject2List(List<T> list,T object){
-		if(list.size()>=IConstant.LIST_SIZE){
+		if(list.size()>=LIST_SIZE){
 			list.remove(0);
 		}
 		list.add(object);
