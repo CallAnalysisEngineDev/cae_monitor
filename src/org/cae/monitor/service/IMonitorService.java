@@ -21,5 +21,7 @@ public interface IMonitorService {
 	
 	ServiceResult queryJvmClassService();
 	
+	ServiceResult gcService();
+	
 	ServiceResult exchangeService(ServerInfo serverInfo);
 }

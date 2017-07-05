@@ -143,4 +143,17 @@ public class MonitorControllerImpl implements IMonitorController {
 		return "forward:/";
 	}
 
+	@Override
+	@RequestMapping(value="/gc",method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> gcController(HttpSession session) {
+		if(session.getAttribute("adminId")==null){
+			Map<String,Object> theResult=new HashMap<String, Object>();
+			theResult.put("success", false);
+			theResult.put("errInfo", "登录信息过期");
+			return theResult;
+		}
+		return monitorService.gcService().toMap();
+	}
+
 }

@@ -25,5 +25,7 @@ public interface IMonitorController {
 	
 	Map<String,Object> queryJvmClassController(HttpSession session);
 	
+	Map<String,Object> gcController(HttpSession session);
+	
 	String exchangeController(HttpSession session,ServerInfo serverInfo);
 }

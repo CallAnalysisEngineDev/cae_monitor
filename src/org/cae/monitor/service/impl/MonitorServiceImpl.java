@@ -2,14 +2,17 @@ package org.cae.monitor.service.impl;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.cae.monitor.common.ServerInfo;
 import org.cae.monitor.common.ServiceResult;
+
 import static org.cae.monitor.common.Util.getNowTime;
 import static org.cae.monitor.common.Util.toObject;
+
 import org.cae.monitor.entity.CpuInfo;
 import org.cae.monitor.entity.JVMClassLoad;
 import org.cae.monitor.entity.JVMMemory;
@@ -132,6 +135,20 @@ public class MonitorServiceImpl implements IMonitorService {
 		result.setResult(jvmClassLoadInfo);
 		return result;
 	}
+	
+	@Override
+	public ServiceResult gcService() {
+		ServiceResult result=new ServiceResult();
+		String temp=currentServer.gcController();
+		Map<String,Object> gcResult=toObject(temp,Map.class);
+		if((boolean)gcResult.get("successed")){
+			result.setSuccessed(true);
+		}
+		else{
+			result.setSuccessed(false);
+		}
+		return result;
+	}
 
 	@Override
 	public ServiceResult exchangeService(ServerInfo serverInfo) {
@@ -240,4 +257,5 @@ public class MonitorServiceImpl implements IMonitorService {
 		}
 		list.add(object);
 	}
+
 }
