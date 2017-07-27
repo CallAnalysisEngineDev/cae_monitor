@@ -30,10 +30,10 @@ import static org.cae.monitor.common.IConstant.LIST_SIZE;
 @Service("monitorService")
 public class MonitorServiceImpl implements IMonitorService {
 
-	@Resource(name="&rmiBeanFactory")
+	@Resource(name = "&rmiBeanFactory")
 	private RmiProxyFactoryBean rmiBeanFactory;
 	private static IMonitorController currentServer;
-	@Resource(name="serversInfo")
+	@Resource(name = "serversInfo")
 	private List<ServerInfo> servers;
 	private static List<CpuInfo> cpuInfo = new LinkedList<CpuInfo>();
 	private static List<MemoryInfo> memoryInfo = new LinkedList<MemoryInfo>();
@@ -41,40 +41,40 @@ public class MonitorServiceImpl implements IMonitorService {
 	private static List<JVMMemory> jvmMemoryInfo = new LinkedList<JVMMemory>();
 	private static List<JVMThread> jvmThreadInfo = new LinkedList<JVMThread>();
 	private static List<JVMClassLoad> jvmClassLoadInfo = new LinkedList<JVMClassLoad>();
-	
+
 	@PostConstruct
-	public void init(){
-		for(ServerInfo server:servers){
-			IMonitorController serverRemote=getRemote(server);
-			if(serverRemote==null){
+	public void init() {
+		for (ServerInfo server : servers) {
+			IMonitorController serverRemote = getRemote(server);
+			if (serverRemote == null) {
 				server.setAvailable(false);
-			}
-			else{
+			} else {
 				server.setAvailable(true);
 				server.setRemote(serverRemote);
 			}
 		}
-		currentServer=servers.get(0).getRemote();
+		currentServer = servers.get(0).getRemote();
 	}
-	
-	private IMonitorController getRemote(ServerInfo server){
-		try{
-			String serviceUrl="rmi://"+server.getServerIp()+":"+server.getServerPort()+"/monitor";
+
+	private IMonitorController getRemote(ServerInfo server) {
+		try {
+			String serviceUrl = "rmi://" + server.getServerIp() + ":"
+					+ server.getServerPort() + "/monitor";
 			rmiBeanFactory.setServiceUrl(serviceUrl);
 			rmiBeanFactory.afterPropertiesSet();
 			return (IMonitorController) rmiBeanFactory.getObject();
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public ServiceResult queryForHomepageService() {
-		ServiceResult result=new ServiceResult();
-		try{
+		ServiceResult result = new ServiceResult();
+		try {
 			result.setSuccessed(true);
 			result.setResult(currentServer.queryForHomepageController());
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			result.setSuccessed(false);
 		}
 		return result;
@@ -82,7 +82,7 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult heartbeatService() {
-		ServiceResult result=new ServiceResult();
+		ServiceResult result = new ServiceResult();
 		result.setSuccessed(true);
 		result.setResult(servers);
 		return result;
@@ -90,7 +90,7 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult queryCpuService() {
-		ServiceResult result=new ServiceResult();
+		ServiceResult result = new ServiceResult();
 		result.setSuccessed(true);
 		result.setResult(cpuInfo);
 		return result;
@@ -98,7 +98,7 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult queryMemoryService() {
-		ServiceResult result=new ServiceResult();
+		ServiceResult result = new ServiceResult();
 		result.setSuccessed(true);
 		result.setResult(memoryInfo);
 		return result;
@@ -106,7 +106,7 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult queryProcessService() {
-		ServiceResult result=new ServiceResult();
+		ServiceResult result = new ServiceResult();
 		result.setSuccessed(true);
 		result.setResult(processInfo);
 		return result;
@@ -114,7 +114,7 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult queryJvmMemoryService() {
-		ServiceResult result=new ServiceResult();
+		ServiceResult result = new ServiceResult();
 		result.setSuccessed(true);
 		result.setResult(jvmMemoryInfo);
 		return result;
@@ -122,7 +122,7 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult queryJvmThreadService() {
-		ServiceResult result=new ServiceResult();
+		ServiceResult result = new ServiceResult();
 		result.setSuccessed(true);
 		result.setResult(jvmThreadInfo);
 		return result;
@@ -130,21 +130,20 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult queryJvmClassService() {
-		ServiceResult result=new ServiceResult();
+		ServiceResult result = new ServiceResult();
 		result.setSuccessed(true);
 		result.setResult(jvmClassLoadInfo);
 		return result;
 	}
-	
+
 	@Override
 	public ServiceResult gcService() {
-		ServiceResult result=new ServiceResult();
-		String temp=currentServer.gcController();
-		Map<String,Object> gcResult=toObject(temp,Map.class);
-		if((boolean)gcResult.get("successed")){
+		ServiceResult result = new ServiceResult();
+		String temp = currentServer.gcController();
+		Map<String, Object> gcResult = toObject(temp, Map.class);
+		if ((boolean) gcResult.get("successed")) {
 			result.setSuccessed(true);
-		}
-		else{
+		} else {
 			result.setSuccessed(false);
 		}
 		return result;
@@ -152,9 +151,9 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	@Override
 	public ServiceResult exchangeService(ServerInfo serverInfo) {
-		for(ServerInfo server:servers){
-			if(serverInfo.getServerId().equals(server.getServerId())){
-				currentServer=server.getRemote();
+		for (ServerInfo server : servers) {
+			if (serverInfo.getServerId().equals(server.getServerId())) {
+				currentServer = server.getRemote();
 			}
 		}
 		cpuInfo.clear();
@@ -166,93 +165,97 @@ public class MonitorServiceImpl implements IMonitorService {
 		return new ServiceResult(true);
 	}
 
-	@Scheduled(cron="* * * * * *")
-	public void heartbeatTask(){
-		for(ServerInfo server:servers){
-			if(!server.isAvailable()){
-				IMonitorController serverRemote=getRemote(server);
-				if(serverRemote!=null){
+	@Scheduled(cron = "* * * * * *")
+	public void heartbeatTask() {
+		for (ServerInfo server : servers) {
+			if (!server.isAvailable()) {
+				IMonitorController serverRemote = getRemote(server);
+				if (serverRemote != null) {
 					server.setAvailable(true);
 					server.setRemote(serverRemote);
 				}
-			}
-			else{
-				try{
-					server.setAvailable(server.getRemote().heartbeatController());
-				}catch(Exception ex){
+			} else {
+				try {
+					server.setAvailable(server.getRemote()
+							.heartbeatController());
+				} catch (Exception ex) {
 					server.setAvailable(false);
 				}
 			}
 		}
 	}
-	
-	@Scheduled(cron="* * * * * *")
-	public void getCpuInfoTask(){
-		try{
-			String result=currentServer.queryCpuController();
-			CpuInfo cpu=toObject(result, CpuInfo.class);
-			addObject2List(cpuInfo,cpu);
-		}catch(Exception ex){
-			addObject2List(cpuInfo,new CpuInfo.Builder().time(getNowTime()).build());
+
+	@Scheduled(cron = "* * * * * *")
+	public void getCpuInfoTask() {
+		try {
+			String result = currentServer.queryCpuController();
+			CpuInfo cpu = toObject(result, CpuInfo.class);
+			addObject2List(cpuInfo, cpu);
+		} catch (Exception ex) {
+			addObject2List(cpuInfo, new CpuInfo.Builder().time(getNowTime())
+					.build());
 		}
 	}
-	
-	@Scheduled(cron="* * * * * *")
-	public void getMemoryInfoTask(){
-		try{
-			String result=currentServer.queryMemoryController();
-			MemoryInfo memory=toObject(result, MemoryInfo.class);
-			addObject2List(memoryInfo,memory);
-		}catch(Exception ex){
-			addObject2List(memoryInfo,new MemoryInfo.Builder().time(getNowTime()).build());
+
+	@Scheduled(cron = "* * * * * *")
+	public void getMemoryInfoTask() {
+		try {
+			String result = currentServer.queryMemoryController();
+			MemoryInfo memory = toObject(result, MemoryInfo.class);
+			addObject2List(memoryInfo, memory);
+		} catch (Exception ex) {
+			addObject2List(memoryInfo,
+					new MemoryInfo.Builder().time(getNowTime()).build());
 		}
 	}
-	
-	@Scheduled(cron="* * * * * *")
-	public void getProcessInfoTask(){
-		try{
-			String result=currentServer.queryProcessController();
-			List<ProcessInfo> process=toObject(result, List.class);
-			this.processInfo=process;
-		}catch(Exception ex){
+
+	@Scheduled(cron = "* * * * * *")
+	public void getProcessInfoTask() {
+		try {
+			String result = currentServer.queryProcessController();
+			List<ProcessInfo> process = toObject(result, List.class);
+			this.processInfo = process;
+		} catch (Exception ex) {
 		}
 	}
-	
-	@Scheduled(cron="* * * * * *")
-	public void getJvmMemoryInfoTask(){
-		try{
-			String result=currentServer.queryJvmMemoryController();
-			JVMMemory jvmMemory=toObject(result, JVMMemory.class);
+
+	@Scheduled(cron = "* * * * * *")
+	public void getJvmMemoryInfoTask() {
+		try {
+			String result = currentServer.queryJvmMemoryController();
+			JVMMemory jvmMemory = toObject(result, JVMMemory.class);
 			addObject2List(jvmMemoryInfo, jvmMemory);
-		}catch(Exception ex){
-			addObject2List(jvmMemoryInfo,new JVMMemory.Builder().time(getNowTime()).build());
+		} catch (Exception ex) {
+			addObject2List(jvmMemoryInfo,
+					new JVMMemory.Builder().time(getNowTime()).build());
 		}
 	}
-	
-	@Scheduled(cron="* * * * * *")
-	public void getJvmThreadInfoTask(){
-		try{
-			String result=currentServer.queryJvmThreadController();
-			JVMThread jvmThread=toObject(result, JVMThread.class);
+
+	@Scheduled(cron = "* * * * * *")
+	public void getJvmThreadInfoTask() {
+		try {
+			String result = currentServer.queryJvmThreadController();
+			JVMThread jvmThread = toObject(result, JVMThread.class);
 			addObject2List(jvmThreadInfo, jvmThread);
-		}catch(Exception ex){
-			addObject2List(jvmThreadInfo, new JVMThread.Builder().time(getNowTime()).build());
+		} catch (Exception ex) {
+			addObject2List(jvmThreadInfo,
+					new JVMThread.Builder().time(getNowTime()).build());
 		}
 	}
-	
-	@Scheduled(cron="* * * * * *")
-	public void getJvmClassLoadInfoTask(){
-		try{
-			String result=currentServer.queryJvmClassController();
-			JVMClassLoad jvmClassLoad=toObject(result, JVMClassLoad.class);
+
+	@Scheduled(cron = "* * * * * *")
+	public void getJvmClassLoadInfoTask() {
+		try {
+			String result = currentServer.queryJvmClassController();
+			JVMClassLoad jvmClassLoad = toObject(result, JVMClassLoad.class);
 			addObject2List(jvmClassLoadInfo, jvmClassLoad);
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			addObject2List(jvmClassLoadInfo, new JVMClassLoad(getNowTime()));
 		}
 	}
-	
-	private <T> void addObject2List(List<T> list,T object){
-		if(list.size()>=LIST_SIZE){
+
+	private <T> void addObject2List(List<T> list, T object) {
+		if (list.size() >= LIST_SIZE) {
 			list.remove(0);
 		}
 		list.add(object);

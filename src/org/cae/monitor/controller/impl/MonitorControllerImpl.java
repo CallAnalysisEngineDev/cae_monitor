@@ -24,19 +24,19 @@ public class MonitorControllerImpl implements IMonitorController {
 
 	@Autowired
 	private IMonitorService monitorService;
-	
+
 	@Override
 	@RequestMapping("/index")
 	public ModelAndView queryForHomepageController(HttpSession session) {
-		ModelAndView mav=new ModelAndView();
-		if(session.getAttribute("adminId")==null){
+		ModelAndView mav = new ModelAndView();
+		if (session.getAttribute("adminId") == null) {
 			mav.addObject("errInfo", "请先登录!");
 			mav.setViewName("login.jsp");
 			return mav;
 		}
-		ServiceResult result=monitorService.queryForHomepageService();
+		ServiceResult result = monitorService.queryForHomepageService();
 		mav.addObject("success", result.isSuccessed());
-		if(result.isSuccessed()){
+		if (result.isSuccessed()) {
 			mav.addObject("result", toJson(result.getResult()));
 		}
 		mav.setViewName("WEB-INF/index.jsp");
@@ -44,11 +44,11 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/servers",method=RequestMethod.GET)
+	@RequestMapping(value = "/servers", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String,Object> heartbeatController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+	public Map<String, Object> heartbeatController(HttpSession session) {
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;
@@ -57,11 +57,11 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/cpu",method=RequestMethod.GET)
+	@RequestMapping(value = "/cpu", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> queryCpuController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;
@@ -70,11 +70,11 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/memory",method=RequestMethod.GET)
+	@RequestMapping(value = "/memory", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> queryMemoryController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;
@@ -83,11 +83,11 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/process",method=RequestMethod.GET)
+	@RequestMapping(value = "/process", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> queryProcessController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;
@@ -96,11 +96,11 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/jvmMemory",method=RequestMethod.GET)
+	@RequestMapping(value = "/jvmMemory", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> queryJvmMemoryController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;
@@ -109,11 +109,11 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/jvmThread",method=RequestMethod.GET)
+	@RequestMapping(value = "/jvmThread", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> queryJvmThreadController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;
@@ -122,11 +122,11 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/jvmClassLoad",method=RequestMethod.GET)
+	@RequestMapping(value = "/jvmClassLoad", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> queryJvmClassController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;
@@ -135,20 +135,20 @@ public class MonitorControllerImpl implements IMonitorController {
 	}
 
 	@Override
-	@RequestMapping(value="/exchange",method=RequestMethod.POST)
-	public String exchangeController(HttpSession session,ServerInfo serverInfo) {
-		if(session.getAttribute("adminId")==null){
+	@RequestMapping(value = "/exchange", method = RequestMethod.POST)
+	public String exchangeController(HttpSession session, ServerInfo serverInfo) {
+		if (session.getAttribute("adminId") == null) {
 			return "login.html";
 		}
 		return "forward:/";
 	}
 
 	@Override
-	@RequestMapping(value="/gc",method=RequestMethod.GET)
+	@RequestMapping(value = "/gc", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> gcController(HttpSession session) {
-		if(session.getAttribute("adminId")==null){
-			Map<String,Object> theResult=new HashMap<String, Object>();
+		if (session.getAttribute("adminId") == null) {
+			Map<String, Object> theResult = new HashMap<String, Object>();
 			theResult.put("success", false);
 			theResult.put("errInfo", "登录信息过期");
 			return theResult;

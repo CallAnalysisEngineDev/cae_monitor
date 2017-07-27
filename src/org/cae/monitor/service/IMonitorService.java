@@ -6,22 +6,22 @@ import org.cae.monitor.common.ServiceResult;
 public interface IMonitorService {
 
 	ServiceResult queryForHomepageService();
-	
+
 	ServiceResult heartbeatService();
-	
+
 	ServiceResult queryCpuService();
-	
+
 	ServiceResult queryMemoryService();
-	
+
 	ServiceResult queryProcessService();
-	
+
 	ServiceResult queryJvmMemoryService();
-	
+
 	ServiceResult queryJvmThreadService();
-	
+
 	ServiceResult queryJvmClassService();
-	
+
 	ServiceResult gcService();
-	
+
 	ServiceResult exchangeService(ServerInfo serverInfo);
 }
