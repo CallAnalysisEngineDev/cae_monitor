@@ -8,54 +8,6 @@ public class JVMMemory extends Entity {
 	private double oldGenRate;
 	private double permGenRate;
 
-	private JVMMemory(Builder builder) {
-		this.time = builder.time;
-		this.edenRate = builder.edenRate;
-		this.survivorRate = builder.survivorRate;
-		this.oldGenRate = builder.oldGenRate;
-		this.permGenRate = builder.permGenRate;
-	}
-
-	public static class Builder implements IBuilder<JVMMemory> {
-
-		private String time;
-		private double edenRate;
-		private double survivorRate;
-		private double oldGenRate;
-		private double permGenRate;
-
-		public Builder time(String time) {
-			this.time = time;
-			return this;
-		}
-
-		public Builder edenRate(double edenRate) {
-			this.edenRate = edenRate;
-			return this;
-		}
-
-		public Builder survivorRate(double survivorRate) {
-			this.survivorRate = survivorRate;
-			return this;
-		}
-
-		public Builder oldGenRate(double oldGenRate) {
-			this.oldGenRate = oldGenRate;
-			return this;
-		}
-
-		public Builder permGenRate(double permGenRate) {
-			this.permGenRate = permGenRate;
-			return this;
-		}
-
-		@Override
-		public JVMMemory build() {
-			return new JVMMemory(this);
-		}
-
-	}
-
 	public String getTime() {
 		return time;
 	}
@@ -74,5 +26,25 @@ public class JVMMemory extends Entity {
 
 	public double getPermGenRate() {
 		return permGenRate;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public void setEdenRate(double edenRate) {
+		this.edenRate = edenRate;
+	}
+
+	public void setSurvivorRate(double survivorRate) {
+		this.survivorRate = survivorRate;
+	}
+
+	public void setOldGenRate(double oldGenRate) {
+		this.oldGenRate = oldGenRate;
+	}
+
+	public void setPermGenRate(double permGenRate) {
+		this.permGenRate = permGenRate;
 	}
 }

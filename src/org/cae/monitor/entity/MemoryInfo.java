@@ -8,57 +8,6 @@ public class MemoryInfo extends Entity {
 	private double swapUse;
 	private double swapFree;
 
-	private MemoryInfo(Builder builder) {
-		this.time = builder.time;
-		this.memoryUse = builder.memoryUse;
-		this.memoryFree = builder.memoryFree;
-		this.swapUse = builder.swapUse;
-		this.swapFree = builder.swapFree;
-	}
-
-	public static class Builder implements IBuilder<MemoryInfo> {
-
-		private String time;
-		private double memoryUse;
-		private double memoryFree;
-		private double swapUse;
-		private double swapFree;
-
-		public Builder() {
-		}
-
-		public Builder time(String time) {
-			this.time = time;
-			return this;
-		}
-
-		public Builder memoryUse(double memoryUse) {
-			this.memoryUse = memoryUse;
-			return this;
-		}
-
-		public Builder memoryFree(double memoryFree) {
-			this.memoryFree = memoryFree;
-			return this;
-		}
-
-		public Builder swapUse(double swapUse) {
-			this.swapUse = swapUse;
-			return this;
-		}
-
-		public Builder swapFree(double swapFree) {
-			this.swapFree = swapFree;
-			return this;
-		}
-
-		@Override
-		public MemoryInfo build() {
-			return new MemoryInfo(this);
-		}
-
-	}
-
 	public String getTime() {
 		return time;
 	}
@@ -77,5 +26,25 @@ public class MemoryInfo extends Entity {
 
 	public double getSwapFree() {
 		return swapFree;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public void setMemoryUse(double memoryUse) {
+		this.memoryUse = memoryUse;
+	}
+
+	public void setMemoryFree(double memoryFree) {
+		this.memoryFree = memoryFree;
+	}
+
+	public void setSwapUse(double swapUse) {
+		this.swapUse = swapUse;
+	}
+
+	public void setSwapFree(double swapFree) {
+		this.swapFree = swapFree;
 	}
 }

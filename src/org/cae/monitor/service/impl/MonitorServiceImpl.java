@@ -12,6 +12,7 @@ import org.cae.monitor.common.ServiceResult;
 
 import static org.cae.monitor.common.Util.getNowTime;
 import static org.cae.monitor.common.Util.toObject;
+import static org.cae.monitor.common.Util.toJson;
 
 import org.cae.monitor.entity.CpuInfo;
 import org.cae.monitor.entity.JVMClassLoad;
@@ -186,68 +187,54 @@ public class MonitorServiceImpl implements IMonitorService {
 	}
 
 	@Scheduled(cron = "* * * * * *")
-	public void getCpuInfoTask() {
+	public void getMachineInfo() {
+		String result = currentServer.getMachineInfo();
+		Map<String, Object> theResult = toObject(result, Map.class);
+		
+		CpuInfo cpu = null;
 		try {
-			String result = currentServer.queryCpuController();
-			CpuInfo cpu = toObject(result, CpuInfo.class);
+			cpu=toObject(toJson(theResult.get("cpu")), CpuInfo.class);
 			addObject2List(cpuInfo, cpu);
 		} catch (Exception ex) {
-			addObject2List(cpuInfo, new CpuInfo.Builder().time(getNowTime())
-					.build());
+			cpu=new CpuInfo();
+			cpu.setTime(getNowTime());
+			addObject2List(cpuInfo, cpu);
 		}
-	}
 
-	@Scheduled(cron = "* * * * * *")
-	public void getMemoryInfoTask() {
+		MemoryInfo memory=null;
 		try {
-			String result = currentServer.queryMemoryController();
-			MemoryInfo memory = toObject(result, MemoryInfo.class);
+			memory=toObject(toJson(theResult.get("memory")), MemoryInfo.class);
 			addObject2List(memoryInfo, memory);
 		} catch (Exception ex) {
-			addObject2List(memoryInfo,
-					new MemoryInfo.Builder().time(getNowTime()).build());
+			memory=new MemoryInfo();
+			memory.setTime(getNowTime());
+			addObject2List(memoryInfo,memory);
 		}
-	}
 
-	@Scheduled(cron = "* * * * * *")
-	public void getProcessInfoTask() {
-		try {
-			String result = currentServer.queryProcessController();
-			List<ProcessInfo> process = toObject(result, List.class);
-			this.processInfo = process;
-		} catch (Exception ex) {
-		}
-	}
+		this.processInfo = (List<ProcessInfo>) theResult.get("process");
 
-	@Scheduled(cron = "* * * * * *")
-	public void getJvmMemoryInfoTask() {
+		JVMMemory jvmMemory=null;
 		try {
-			String result = currentServer.queryJvmMemoryController();
-			JVMMemory jvmMemory = toObject(result, JVMMemory.class);
+			jvmMemory=toObject(toJson(theResult.get("jvmMemory")), JVMMemory.class);
 			addObject2List(jvmMemoryInfo, jvmMemory);
 		} catch (Exception ex) {
-			addObject2List(jvmMemoryInfo,
-					new JVMMemory.Builder().time(getNowTime()).build());
+			jvmMemory=new JVMMemory();
+			jvmMemory.setTime(getNowTime());
+			addObject2List(jvmMemoryInfo,jvmMemory);
 		}
-	}
 
-	@Scheduled(cron = "* * * * * *")
-	public void getJvmThreadInfoTask() {
+		JVMThread jvmThread=null;
 		try {
-			String result = currentServer.queryJvmThreadController();
-			JVMThread jvmThread = toObject(result, JVMThread.class);
+			jvmThread=toObject(toJson(theResult.get("jvmThread")), JVMThread.class);
 			addObject2List(jvmThreadInfo, jvmThread);
 		} catch (Exception ex) {
-			addObject2List(jvmThreadInfo,
-					new JVMThread.Builder().time(getNowTime()).build());
+			jvmThread=new JVMThread();
+			jvmThread.setTime(getNowTime());
+			addObject2List(jvmThreadInfo,jvmThread);
 		}
-	}
 
-	@Scheduled(cron = "* * * * * *")
-	public void getJvmClassLoadInfoTask() {
 		try {
-			String result = currentServer.queryJvmClassController();
-			JVMClassLoad jvmClassLoad = toObject(result, JVMClassLoad.class);
+			JVMClassLoad jvmClassLoad=toObject(toJson(theResult.get("jvmClassLoad")), JVMClassLoad.class);
 			addObject2List(jvmClassLoadInfo, jvmClassLoad);
 		} catch (Exception ex) {
 			addObject2List(jvmClassLoadInfo, new JVMClassLoad(getNowTime()));
