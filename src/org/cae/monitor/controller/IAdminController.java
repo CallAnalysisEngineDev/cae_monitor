@@ -8,8 +8,8 @@ import org.cae.monitor.security.ShakeHand;
 import org.springframework.web.servlet.ModelAndView;
 
 public interface IAdminController {
-	
-	Map<String,Object> shakeHand(HttpSession session,ShakeHand shakeHand);
-	
+
+	Map<String, Object> shakeHand(HttpSession session, ShakeHand shakeHand);
+
 	ModelAndView removeKeyController(HttpSession session);
 }

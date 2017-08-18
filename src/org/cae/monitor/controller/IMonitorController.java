@@ -10,20 +10,22 @@ import org.springframework.web.servlet.ModelAndView;
 public interface IMonitorController {
 
 	ModelAndView queryForHomepageController(HttpSession session);
-	
-	Map<String,Object> heartbeatController(HttpSession session);
-	
-	Map<String,Object> queryCpuController(HttpSession session);
-	
-	Map<String,Object> queryMemoryController(HttpSession session);
-	
-	Map<String,Object> queryProcessController(HttpSession session);
-	
-	Map<String,Object> queryJvmMemoryController(HttpSession session);
-	
-	Map<String,Object> queryJvmThreadController(HttpSession session);
-	
-	Map<String,Object> queryJvmClassController(HttpSession session);
-	
-	String exchangeController(HttpSession session,ServerInfo serverInfo);
+
+	Map<String, Object> heartbeatController(HttpSession session);
+
+	Map<String, Object> queryCpuController(HttpSession session);
+
+	Map<String, Object> queryMemoryController(HttpSession session);
+
+	Map<String, Object> queryProcessController(HttpSession session);
+
+	Map<String, Object> queryJvmMemoryController(HttpSession session);
+
+	Map<String, Object> queryJvmThreadController(HttpSession session);
+
+	Map<String, Object> queryJvmClassController(HttpSession session);
+
+	Map<String, Object> gcController(HttpSession session);
+
+	String exchangeController(HttpSession session, ServerInfo serverInfo);
 }

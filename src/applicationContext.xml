@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans
-	xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:task="http://www.springframework.org/schema/task"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
 	http://www.springframework.org/schema/context 
@@ -13,47 +10,62 @@
 	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
 	http://www.springframework.org/schema/task  
 	http://www.springframework.org/schema/task/spring-task-4.2.xsd ">
-    
-    <bean id="serversInfo" class="java.util.ArrayList" scope="singleton">
-    	<constructor-arg>
-    		<list>
-    			<ref bean="server1"/>
-    		</list>
-    	</constructor-arg>
-    </bean>
-    <bean id="server1" class="org.cae.monitor.common.ServerInfo">
-    	<property name="serverName"><value>默认主机</value></property>
-    	<property name="serverIp"><value>127.0.0.1</value></property>
-    	<property name="serverPort"><value>8001</value></property>
-    	<property name="serverGroup"><value>default</value></property>
-    </bean>
-    <bean id="rmiBeanFactory" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
-    	<property name="serviceInterface" value="org.cae.monitor.remote.IMonitorController"/>
-    	<property name="serviceUrl" value=""/>
-    </bean>
-    
-    <context:component-scan base-package="org.cae.monitor.dao.impl"/>
-    <context:component-scan base-package="org.cae.monitor.security"/>
-    <context:component-scan base-package="org.cae.monitor.service.impl"/>
-	<context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>
-	
-    <bean id="dataSource"
-        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${driverClassName}" />
-        <property name="url" value="${url}"/>
-        <property name="username" value="${useraccount}"/>
-        <property name="password" value="${password}"/>
-    </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" abstract="false" lazy-init="false" autowire="default">
-        <property name="dataSource"><ref bean="dataSource"/></property>
-    </bean>
-    
-    <tx:annotation-driven />
-    <bean id="transactionManager"
-    	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource" />  
-    </bean>
-    
-    <task:annotation-driven/>
+	<!-- 监控的应用服务器列表配置 -->
+	<bean id="serversInfo" class="java.util.ArrayList" scope="singleton">
+		<constructor-arg>
+			<list>
+				<!-- 以后要监控几台服务器就要在这里加多少个ref节点 -->
+				<ref bean="server1" />
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean id="server1" class="org.cae.monitor.common.ServerInfo">
+		<property name="serverName">
+			<value>默认主机</value>
+		</property>
+		<property name="serverIp">
+			<value>127.0.0.1</value>
+		</property>
+		<property name="serverPort">
+			<value>8001</value>
+		</property>
+		<property name="serverGroup">
+			<value>default</value>
+		</property>
+	</bean>
+	<!-- Spring RMI的工厂配置 -->
+	<bean id="rmiBeanFactory" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceInterface" value="org.cae.monitor.remote.IMonitorController" />
+		<property name="serviceUrl" value="" />
+	</bean>
+
+	<context:component-scan base-package="org.cae.monitor.dao.impl" />
+	<context:component-scan base-package="org.cae.monitor.security" />
+	<context:component-scan base-package="org.cae.monitor.service.impl" />
+	<context:property-placeholder location="classpath:jdbc.properties"
+		ignore-unresolvable="true" />
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driverClassName}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${useraccount}" />
+		<property name="password" value="${password}" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
+		abstract="false" lazy-init="false" autowire="default">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+	<tx:annotation-driven />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<task:annotation-driven />
 </beans>
