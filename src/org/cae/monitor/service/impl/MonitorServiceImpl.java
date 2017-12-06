@@ -59,8 +59,7 @@ public class MonitorServiceImpl implements IMonitorService {
 
 	private IMonitorController getRemote(ServerInfo server) {
 		try {
-			String serviceUrl = "rmi://" + server.getServerIp() + ":"
-					+ server.getServerPort() + "/monitor";
+			String serviceUrl = "rmi://" + server.getServerIp() + ":" + server.getServerPort() + "/monitor";
 			rmiBeanFactory.setServiceUrl(serviceUrl);
 			rmiBeanFactory.afterPropertiesSet();
 			return (IMonitorController) rmiBeanFactory.getObject();
@@ -177,8 +176,7 @@ public class MonitorServiceImpl implements IMonitorService {
 				}
 			} else {
 				try {
-					server.setAvailable(server.getRemote()
-							.heartbeatController());
+					server.setAvailable(server.getRemote().heartbeatController());
 				} catch (Exception ex) {
 					server.setAvailable(false);
 				}
@@ -186,55 +184,59 @@ public class MonitorServiceImpl implements IMonitorService {
 		}
 	}
 
-	@Scheduled(cron = "* * * * * *")
+	//@Scheduled(cron = "* * * * * *")
 	public void getMachineInfo() {
+		if (currentServer == null) {
+			init();
+			return;
+		}
 		String result = currentServer.getMachineInfo();
 		Map<String, Object> theResult = toObject(result, Map.class);
-		
+
 		CpuInfo cpu = null;
 		try {
-			cpu=toObject(toJson(theResult.get("cpu")), CpuInfo.class);
+			cpu = toObject(toJson(theResult.get("cpu")), CpuInfo.class);
 			addObject2List(cpuInfo, cpu);
 		} catch (Exception ex) {
-			cpu=new CpuInfo();
+			cpu = new CpuInfo();
 			cpu.setTime(getNowTime());
 			addObject2List(cpuInfo, cpu);
 		}
 
-		MemoryInfo memory=null;
+		MemoryInfo memory = null;
 		try {
-			memory=toObject(toJson(theResult.get("memory")), MemoryInfo.class);
+			memory = toObject(toJson(theResult.get("memory")), MemoryInfo.class);
 			addObject2List(memoryInfo, memory);
 		} catch (Exception ex) {
-			memory=new MemoryInfo();
+			memory = new MemoryInfo();
 			memory.setTime(getNowTime());
-			addObject2List(memoryInfo,memory);
+			addObject2List(memoryInfo, memory);
 		}
 
 		this.processInfo = (List<ProcessInfo>) theResult.get("process");
 
-		JVMMemory jvmMemory=null;
+		JVMMemory jvmMemory = null;
 		try {
-			jvmMemory=toObject(toJson(theResult.get("jvmMemory")), JVMMemory.class);
+			jvmMemory = toObject(toJson(theResult.get("jvmMemory")), JVMMemory.class);
 			addObject2List(jvmMemoryInfo, jvmMemory);
 		} catch (Exception ex) {
-			jvmMemory=new JVMMemory();
+			jvmMemory = new JVMMemory();
 			jvmMemory.setTime(getNowTime());
-			addObject2List(jvmMemoryInfo,jvmMemory);
+			addObject2List(jvmMemoryInfo, jvmMemory);
 		}
 
-		JVMThread jvmThread=null;
+		JVMThread jvmThread = null;
 		try {
-			jvmThread=toObject(toJson(theResult.get("jvmThread")), JVMThread.class);
+			jvmThread = toObject(toJson(theResult.get("jvmThread")), JVMThread.class);
 			addObject2List(jvmThreadInfo, jvmThread);
 		} catch (Exception ex) {
-			jvmThread=new JVMThread();
+			jvmThread = new JVMThread();
 			jvmThread.setTime(getNowTime());
-			addObject2List(jvmThreadInfo,jvmThread);
+			addObject2List(jvmThreadInfo, jvmThread);
 		}
 
 		try {
-			JVMClassLoad jvmClassLoad=toObject(toJson(theResult.get("jvmClassLoad")), JVMClassLoad.class);
+			JVMClassLoad jvmClassLoad = toObject(toJson(theResult.get("jvmClassLoad")), JVMClassLoad.class);
 			addObject2List(jvmClassLoadInfo, jvmClassLoad);
 		} catch (Exception ex) {
 			addObject2List(jvmClassLoadInfo, new JVMClassLoad(getNowTime()));
